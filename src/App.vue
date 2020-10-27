@@ -141,6 +141,12 @@ h1.page-title {
   padding-bottom: 0.25em;
 }
 
+.score {
+  font-family: "bariolregular";
+  font-size: 1.4em;
+  color: rgb(136, 66, 0);
+}
+
 .answer-container {
   margin-top: 0.25em;
   margin-bottom: 0.25em;
@@ -160,8 +166,12 @@ button.answer-button {
   border: 2px solid rgb(70, 59, 102);
 }
 
-.active,
 button.answer-button:hover {
+  background-color: rgb(109, 96, 143);
+  color: white;
+}
+
+button.answer-button.active {
   background-color: rgb(109, 96, 143);
   color: white;
 }

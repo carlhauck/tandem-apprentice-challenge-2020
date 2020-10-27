@@ -11,15 +11,16 @@
       <h2 class="question"> {{ 11 - questions.length }}. {{ questions[0]["question"] }} </h2>
       <div class="flex-container">
         <div class="answer-container">
-          <button class="answer-button" v-on:click="mouseAnswer('a')">(a) {{ answers[0] }} </button>
-          <button class="answer-button" v-on:click="mouseAnswer('b')">(b) {{ answers[1] }} </button>
-          <button class="answer-button" v-on:click="mouseAnswer('c')">(c) {{ answers[2] }} </button>
-          <button class="answer-button" v-on:click="mouseAnswer('d')">(d) {{ answers[3] }} </button>
+          <button id="answer-a" class="answer-button" v-on:click="mouseAnswer('a')">(a) {{ answers[0] }} </button>
+          <button id="answer-b" class="answer-button" v-on:click="mouseAnswer('b')">(b) {{ answers[1] }} </button>
+          <button id="answer-c" class="answer-button" v-on:click="mouseAnswer('c')">(c) {{ answers[2] }} </button>
+          <button id="answer-d" class="answer-button" v-on:click="mouseAnswer('d')">(d) {{ answers[3] }} </button>
         </div>
       </div>
       <div class="flex-container">
         <button v-if="answered === true" class="next-button" @click="nextQuestion()">Next Question</button>
       </div>
+      <p class="score">score: {{ score }}</p>
     </div>
   </div>
 </template>
@@ -35,6 +36,7 @@ export default {
       questions: [],
       answers: [],
       answered: false,
+      score: 0,
     };
   },
   created: function () {
@@ -67,10 +69,12 @@ export default {
       this.questions.shift();
       this.shuffleAnswers(this.questions[0]);
       this.answered = false;
-      const thumbsUp = document.getElementById("thumbs-up");
-      thumbsUp.classList.remove("correct");
-      const thumbsDown = document.getElementById("thumbs-down");
-      thumbsDown.classList.remove("incorrect");
+      document.getElementById("thumbs-up").classList.remove("correct");
+      document.getElementById("thumbs-down").classList.remove("incorrect");
+      document.getElementById("answer-a").classList.remove("active");
+      document.getElementById("answer-b").classList.remove("active");
+      document.getElementById("answer-c").classList.remove("active");
+      document.getElementById("answer-d").classList.remove("active");
     },
     shuffleAnswers: function (questionObject) {
       const answers = [
@@ -96,6 +100,7 @@ export default {
       if (this.answered === false) {
         if (e.which === 65) {
           // a
+          document.getElementById("answer-a").classList.add("active");
           if (this.answers[0] === this.questions[0]["correct"]) {
             this.correctAnswer();
           } else {
@@ -103,6 +108,7 @@ export default {
           }
         } else if (e.which === 66) {
           // b
+          document.getElementById("answer-b").classList.add("active");
           if (this.answers[1] === this.questions[0]["correct"]) {
             this.correctAnswer();
           } else {
@@ -110,6 +116,7 @@ export default {
           }
         } else if (e.which === 67) {
           // c
+          document.getElementById("answer-c").classList.add("active");
           if (this.answers[2] === this.questions[0]["correct"]) {
             this.correctAnswer();
           } else {
@@ -117,6 +124,7 @@ export default {
           }
         } else if (e.which === 68) {
           // d
+          document.getElementById("answer-d").classList.add("active");
           if (this.answers[3] === this.questions[0]["correct"]) {
             this.correctAnswer();
           } else {
@@ -129,6 +137,7 @@ export default {
       const thumbsUp = document.getElementById("thumbs-up");
       thumbsUp.classList.add("correct");
       this.answered = true;
+      this.score++;
     },
     incorrectAnswer: function () {
       const thumbsDown = document.getElementById("thumbs-down");
