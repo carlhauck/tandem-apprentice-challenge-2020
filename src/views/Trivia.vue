@@ -19,6 +19,7 @@
       </div>
       <div class="flex-container">
         <button v-if="answered === true" class="next-button" @click="nextQuestion()">Next Question</button>
+        <button v-if="answered === false" tabindex="0" class="next-button disabled" @click="nextQuestion()">Next Question</button>
       </div>
       <p class="score">score: {{ score }}</p>
     </div>
@@ -130,6 +131,10 @@ export default {
           } else {
             this.incorrectAnswer();
           }
+        }
+      } else {
+        if (e.which === 32) {
+          this.nextQuestion();
         }
       }
     },

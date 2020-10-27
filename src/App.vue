@@ -188,6 +188,12 @@ button.next-button {
   border: 2px solid rgb(48, 98, 156);
 }
 
+button.next-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  z-index: -1;
+}
+
 button.next-button:hover {
   color: rgb(222, 230, 240);
   background-color: rgb(66, 115, 172);
