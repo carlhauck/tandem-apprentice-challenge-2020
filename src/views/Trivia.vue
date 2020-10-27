@@ -1,19 +1,30 @@
 <template>
   <div class="trivia">
-    <h2> {{ questions[0]["question"] }} </h2>
-    <button class="answer-button" v-on:click="mouseAnswer('a')">a) {{ answers[0] }} </button>
-    <button class="answer-button" v-on:click="mouseAnswer('b')">b) {{ answers[1] }} </button>
-    <button class="answer-button" v-on:click="mouseAnswer('c')">c) {{ answers[2] }} </button>
-    <button class="answer-button" v-on:click="mouseAnswer('d')">d) {{ answers[3] }} </button>
-    <button @click="nextQuestion()">Next Question</button>
-    <p> {{ questions[0] }} </p>
+    <div class="container text-center">
+      <div class="flex-container">
+        <!-- thumbs down -->
+        <svg id="thumbs-down" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><title>thumb-down</title><g fill="#dddddd"><rect x="1" y="4" width="8" height="24" rx="3" ry="3"></rect> <path d="M47,19a4.988,4.988,0,0,0-2.33-4.209A4.981,4.981,0,0,0,42.6,8.747,3.964,3.964,0,0,0,43,7a4,4,0,0,0-4-4H23A29.993,29.993,0,0,0,11,5.387V26l6.056,20.329A1,1,0,0,0,18,47c2.075,0,6-1.463,6-7V30H41a5.006,5.006,0,0,0,5-5,4.938,4.938,0,0,0-.6-2.348A4.93,4.93,0,0,0,47,19Z" fill="#dddddd"></path></g></svg>
+        <h1 class="page-title">tandem trivia</h1>
+        <!-- thumbs up -->
+        <svg id="thumbs-up" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><title>thumb-up</title><g fill="#dddddd"><rect x="1" y="20" width="8" height="24" rx="3" ry="3"></rect> <path d="M47,29a4.926,4.926,0,0,0-1.6-3.652A4.926,4.926,0,0,0,46,23a5.006,5.006,0,0,0-5-5H24V8c0-5.537-3.925-7-6-7a1,1,0,0,0-.944.671L11,22V42.613A29.993,29.993,0,0,0,23,45H39a4,4,0,0,0,4-4,3.96,3.96,0,0,0-.4-1.747,4.976,4.976,0,0,0,2.071-6.043A4.989,4.989,0,0,0,47,29Z" fill="#dddddd"></path></g></svg>
+      </div>
+      <h2 class="question"> {{ 11 - questions.length }}. {{ questions[0]["question"] }} </h2>
+      <div class="flex-container">
+        <div class="answer-container">
+          <button class="answer-button" v-on:click="mouseAnswer('a')">(a) {{ answers[0] }} </button>
+          <button class="answer-button" v-on:click="mouseAnswer('b')">(b) {{ answers[1] }} </button>
+          <button class="answer-button" v-on:click="mouseAnswer('c')">(c) {{ answers[2] }} </button>
+          <button class="answer-button" v-on:click="mouseAnswer('d')">(d) {{ answers[3] }} </button>
+        </div>
+      </div>
+      <div class="flex-container">
+        <button v-if="answered === true" class="next-button" @click="nextQuestion()">Next Question</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style>
-.answer-button {
-  display: block;
-}
 </style>
 
 <script>
@@ -23,6 +34,7 @@ export default {
     return {
       questions: [],
       answers: [],
+      answered: false,
     };
   },
   created: function () {
@@ -30,14 +42,6 @@ export default {
   },
   mounted: function () {
     window.addEventListener("keydown", this.keyAnswer);
-    // const answer_a = this.refs.answer_a;
-    // const answer_b = this.refs.answer_b;
-    // const answer_c = this.refs.answer_c;
-    // const answer_d = this.refs.answer_d;
-    // answer_a.addEventListener("click", this.mouseAnswer("a"));
-    // answer_b.addEventListener("click", this.mouseAnswer("b"));
-    // answer_c.addEventListener("click", this.mouseAnswer("c"));
-    // answer_d.addEventListener("click", this.mouseAnswer("d"));
   },
   methods: {
     // shuffles & then limits to 10 questions
@@ -62,6 +66,11 @@ export default {
     nextQuestion: function () {
       this.questions.shift();
       this.shuffleAnswers(this.questions[0]);
+      this.answered = false;
+      const thumbsUp = document.getElementById("thumbs-up");
+      thumbsUp.classList.remove("correct");
+      const thumbsDown = document.getElementById("thumbs-down");
+      thumbsDown.classList.remove("incorrect");
     },
     shuffleAnswers: function (questionObject) {
       const answers = [
@@ -81,44 +90,50 @@ export default {
         answers[randomIndex] = temporaryValue;
       }
 
-      // [this.answer_a, this.answer_b, this.answer_c, this.answer_d] = [
-      //   answers[0],
-      //   answers[1],
-      //   answers[2],
-      //   answers[3],
-      // ];
       this.answers = answers;
     },
     keyAnswer: function (e) {
-      if (e.which === 65) {
-        // a
-        if (this.answers[0] === this.questions[0]["correct"]) {
-          console.log("Correct");
-        } else {
-          console.log("Incorrect");
-        }
-      } else if (e.which === 66) {
-        // b
-        if (this.answers[1] === this.questions[0]["correct"]) {
-          console.log("Correct");
-        } else {
-          console.log("Incorrect");
-        }
-      } else if (e.which === 67) {
-        // c
-        if (this.answers[2] === this.questions[0]["correct"]) {
-          console.log("Correct");
-        } else {
-          console.log("Incorrect");
-        }
-      } else if (e.which === 68) {
-        // d
-        if (this.answers[3] === this.questions[0]["correct"]) {
-          console.log("Correct");
-        } else {
-          console.log("Incorrect");
+      if (this.answered === false) {
+        if (e.which === 65) {
+          // a
+          if (this.answers[0] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (e.which === 66) {
+          // b
+          if (this.answers[1] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (e.which === 67) {
+          // c
+          if (this.answers[2] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (e.which === 68) {
+          // d
+          if (this.answers[3] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
         }
       }
+    },
+    correctAnswer: function () {
+      const thumbsUp = document.getElementById("thumbs-up");
+      thumbsUp.classList.add("correct");
+      this.answered = true;
+    },
+    incorrectAnswer: function () {
+      const thumbsDown = document.getElementById("thumbs-down");
+      thumbsDown.classList.add("incorrect");
+      this.answered = true;
     },
     mouseAnswer: function (letter) {
       console.log(letter);
