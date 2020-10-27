@@ -19,7 +19,7 @@
       </div>
       <div class="flex-container">
         <button v-if="answered === true" class="next-button" @click="nextQuestion()">Next Question</button>
-        <button v-if="answered === false" tabindex="0" class="next-button disabled" @click="nextQuestion()">Next Question</button>
+        <button v-else class="next-button disabled" @click="nextQuestion()">Next Question</button>
       </div>
       <p class="score">score: {{ score }}</p>
     </div>
@@ -151,35 +151,41 @@ export default {
     },
     mouseAnswer: function (letter) {
       console.log(letter);
-      // if (e.which === 65) {
-      //   // a
-      //   if (this.answer_a === this.questions[0]["correct"]) {
-      //     console.log("Correct");
-      //   } else {
-      //     console.log("Incorrect");
-      //   }
-      // } else if (e.which === 66) {
-      //   // b
-      //   if (this.answer_b === this.questions[0]["correct"]) {
-      //     console.log("Correct");
-      //   } else {
-      //     console.log("Incorrect");
-      //   }
-      // } else if (e.which === 67) {
-      //   // c
-      //   if (this.answer_c === this.questions[0]["correct"]) {
-      //     console.log("Correct");
-      //   } else {
-      //     console.log("Incorrect");
-      //   }
-      // } else if (e.which === 68) {
-      //   // d
-      //   if (this.answer_d === this.questions[0]["correct"]) {
-      //     console.log("Correct");
-      //   } else {
-      //     console.log("Incorrect");
-      //   }
-      // }
+      if (this.answered === false) {
+        if (letter === "a") {
+          // a
+          document.getElementById("answer-a").classList.add("active");
+          if (this.answers[0] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (letter === "b") {
+          // b
+          document.getElementById("answer-b").classList.add("active");
+          if (this.answers[1] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (letter === "c") {
+          // c
+          document.getElementById("answer-c").classList.add("active");
+          if (this.answers[2] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        } else if (letter === "d") {
+          // d
+          document.getElementById("answer-d").classList.add("active");
+          if (this.answers[3] === this.questions[0]["correct"]) {
+            this.correctAnswer();
+          } else {
+            this.incorrectAnswer();
+          }
+        }
+      }
     },
   },
 };

@@ -79,6 +79,10 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: none !important;
+}
+
 body {
   font-family: "bariolregular";
   background-color: #f3f6f7;
@@ -149,7 +153,7 @@ h1.page-title {
 
 .answer-container {
   margin-top: 0.25em;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.75em;
   width: 100%;
 }
 
@@ -179,7 +183,7 @@ button.answer-button.active {
 button.next-button {
   display: block;
   padding: 0.5em 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.25em;
   font-family: "bariolbold";
   font-size: 1.1em;
   background-color: rgb(247, 244, 240);
