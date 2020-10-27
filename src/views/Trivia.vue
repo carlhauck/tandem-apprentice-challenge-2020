@@ -1,10 +1,10 @@
 <template>
   <div class="trivia">
     <h2> {{ questions[0]["question"] }} </h2>
-    <p>a) {{ answer_a }} </p>
-    <p>b) {{ answer_b }} </p>
-    <p>c) {{ answer_c }} </p>
-    <p>d) {{ answer_d }} </p>
+    <p id="answer-a">a) {{ answer_a }} </p>
+    <p id="answer-b">b) {{ answer_b }} </p>
+    <p id="answer-c">c) {{ answer_c }} </p>
+    <p id="answer-d">d) {{ answer_d }} </p>
     <button @click="nextQuestion()">Next Question</button>
     <p> {{ questions[0] }} </p>
   </div>
@@ -30,7 +30,7 @@ export default {
     this.shuffleQuestions(json);
   },
   mounted: function () {
-    // window.addEventListener("keydown", this.guessLetter);
+    window.addEventListener("keydown", this.keyAnswer);
   },
   methods: {
     // shuffles & then limits to 10 questions
@@ -80,6 +80,37 @@ export default {
         answers[2],
         answers[3],
       ];
+    },
+    keyAnswer: function (e) {
+      if (e.which === 65) {
+        // a
+        if (this.answer_a === this.questions[0]["correct"]) {
+          console.log("Correct");
+        } else {
+          console.log("Incorrect");
+        }
+      } else if (e.which === 66) {
+        // b
+        if (this.answer_b === this.questions[0]["correct"]) {
+          console.log("Correct");
+        } else {
+          console.log("Incorrect");
+        }
+      } else if (e.which === 67) {
+        // c
+        if (this.answer_c === this.questions[0]["correct"]) {
+          console.log("Correct");
+        } else {
+          console.log("Incorrect");
+        }
+      } else if (e.which === 68) {
+        // d
+        if (this.answer_d === this.questions[0]["correct"]) {
+          console.log("Correct");
+        } else {
+          console.log("Incorrect");
+        }
+      }
     },
   },
 };
