@@ -18,8 +18,10 @@
         </div>
       </div>
       <div class="flex-container">
-        <button v-if="answered === true" class="next-button" @click="nextQuestion()">Next Question</button>
-        <button v-else class="next-button disabled" @click="nextQuestion()">Next Question</button>
+        <button v-if="answered === true && questions.length > 1" class="next-button" @click="nextQuestion()">Next Question</button>
+        <button v-else-if="answered === false && questions.length > 1" class="next-button disabled" @click="nextQuestion()">Next Question</button>
+        <button v-else-if="answered === false" class="next-button disabled" @click="shuffleQuestions(json)">Again?</button>
+        <button v-else class="next-button" @click="shuffleQuestions(json)">Again?</button>
       </div>
       <p class="score">score: {{ score }}</p>
     </div>
@@ -34,6 +36,7 @@ import json from "./../assets/data/apprentice-tandem-for-400-data.json";
 export default {
   data: function () {
     return {
+      json: [],
       questions: [],
       answers: [],
       answered: false,
@@ -42,12 +45,13 @@ export default {
   },
   created: function () {
     this.shuffleQuestions(json);
+    this.json = json;
   },
   mounted: function () {
     window.addEventListener("keydown", this.keyAnswer);
   },
   methods: {
-    // shuffles & then limits to 10 questions
+    // shuffles questions and cuts down to 10
     shuffleQuestions: function (questionsArray) {
       const questionsCopy = questionsArray.slice();
       let currentIndex = questionsCopy.length;
@@ -65,17 +69,22 @@ export default {
       this.questions = questionsCopy.slice(0, 10);
       this.shuffleAnswers(questionsCopy[0]);
     },
-    // removes first question from array
-    nextQuestion: function () {
-      this.questions.shift();
-      this.shuffleAnswers(this.questions[0]);
-      this.answered = false;
+    async nextQuestion() {
+      await this.resetElements();
+      await this.questions.shift();
+      await this.shuffleAnswers(this.questions[0]);
+      await this.toggleAnswered();
+    },
+    resetElements: function () {
+      const answerButtons = document.getElementsByClassName("answer-button");
+      answerButtons.forEach((button) => {
+        button.classList.remove("active", "nay");
+      });
       document.getElementById("thumbs-up").classList.remove("correct");
       document.getElementById("thumbs-down").classList.remove("incorrect");
-      document.getElementById("answer-a").classList.remove("active");
-      document.getElementById("answer-b").classList.remove("active");
-      document.getElementById("answer-c").classList.remove("active");
-      document.getElementById("answer-d").classList.remove("active");
+    },
+    toggleAnswered: function () {
+      this.answered = !this.answered;
     },
     shuffleAnswers: function (questionObject) {
       const answers = [
@@ -132,31 +141,54 @@ export default {
             this.incorrectAnswer();
           }
         }
-      } else {
-        if (e.which === 32) {
+      } else if (this.answered === true) {
+        if (e.which === 32 && this.questions.length > 1) {
           this.nextQuestion();
+        } else if (e.which === 32 && this.questions.length === 1) {
+          this.score = 0;
+          this.resetElements();
+          this.toggleAnswered();
+          this.shuffleQuestions(this.json);
         }
       }
     },
-    correctAnswer: function () {
+    correctAnswer: function (indexCorrect) {
       const thumbsUp = document.getElementById("thumbs-up");
       thumbsUp.classList.add("correct");
-      this.answered = true;
+      this.toggleAnswered();
       this.score++;
+      if (indexCorrect === 0) {
+        document.getElementById("answer-a").classList.add("yay");
+      } else if (indexCorrect === 1) {
+        document.getElementById("answer-b").classList.add("yay");
+      } else if (indexCorrect === 2) {
+        document.getElementById("answer-c").classList.add("yay");
+      } else if (indexCorrect === 3) {
+        document.getElementById("answer-d").classList.add("yay");
+      }
     },
     incorrectAnswer: function () {
       const thumbsDown = document.getElementById("thumbs-down");
       thumbsDown.classList.add("incorrect");
-      this.answered = true;
+      this.toggleAnswered();
+      let indexCorrect = this.answers.indexOf(this.questions[0]["correct"]);
+      if (indexCorrect === 0) {
+        document.getElementById("answer-a").classList.add("nay");
+      } else if (indexCorrect === 1) {
+        document.getElementById("answer-b").classList.add("nay");
+      } else if (indexCorrect === 2) {
+        document.getElementById("answer-c").classList.add("nay");
+      } else if (indexCorrect === 3) {
+        document.getElementById("answer-d").classList.add("nay");
+      }
     },
     mouseAnswer: function (letter) {
-      console.log(letter);
-      if (this.answered === false) {
+      if (this.answered == false) {
         if (letter === "a") {
           // a
           document.getElementById("answer-a").classList.add("active");
           if (this.answers[0] === this.questions[0]["correct"]) {
-            this.correctAnswer();
+            this.correctAnswer(0);
           } else {
             this.incorrectAnswer();
           }
@@ -164,7 +196,7 @@ export default {
           // b
           document.getElementById("answer-b").classList.add("active");
           if (this.answers[1] === this.questions[0]["correct"]) {
-            this.correctAnswer();
+            this.correctAnswer(1);
           } else {
             this.incorrectAnswer();
           }
@@ -172,7 +204,7 @@ export default {
           // c
           document.getElementById("answer-c").classList.add("active");
           if (this.answers[2] === this.questions[0]["correct"]) {
-            this.correctAnswer();
+            this.correctAnswer(2);
           } else {
             this.incorrectAnswer();
           }
@@ -180,7 +212,7 @@ export default {
           // d
           document.getElementById("answer-d").classList.add("active");
           if (this.answers[3] === this.questions[0]["correct"]) {
-            this.correctAnswer();
+            this.correctAnswer(3);
           } else {
             this.incorrectAnswer();
           }
