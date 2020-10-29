@@ -11,17 +11,17 @@
       <h2 class="question"> {{ 11 - questions.length }}. {{ questions[0]["question"] }} </h2>
       <div class="flex-container">
         <div class="answer-container">
-          <button id="answer-a" class="answer-button" v-on:click="mouseAnswer('a')">(a) {{ answers[0] }} </button>
-          <button id="answer-b" class="answer-button" v-on:click="mouseAnswer('b')">(b) {{ answers[1] }} </button>
-          <button id="answer-c" class="answer-button" v-on:click="mouseAnswer('c')">(c) {{ answers[2] }} </button>
-          <button id="answer-d" class="answer-button" v-on:click="mouseAnswer('d')">(d) {{ answers[3] }} </button>
+          <button id="answer-a" class="answer-button" @click="guessA()">(a) {{ answers[0] }} </button>
+          <button id="answer-b" class="answer-button" @click="guessB()">(b) {{ answers[1] }} </button>
+          <button id="answer-c" class="answer-button" @click="guessC()">(c) {{ answers[2] }} </button>
+          <button id="answer-d" class="answer-button" @click="guessD()">(d) {{ answers[3] }} </button>
         </div>
       </div>
       <div class="flex-container">
-        <button v-if="answered === true && questions.length > 1" class="next-button" @click="nextQuestion()">Next Question</button>
-        <button v-else-if="answered === false && questions.length > 1" class="next-button disabled" @click="nextQuestion()">Next Question</button>
+        <button v-if="answered === false && questions.length > 1" class="next-button disabled" @click="nextQuestion()">Next Question</button>
+        <button v-else-if="answered === true && questions.length > 1" class="next-button" @click="nextQuestion()">Next Question</button>
         <button v-else-if="answered === false" class="next-button disabled" @click="shuffleQuestions(json)">Again?</button>
-        <button v-else class="next-button" @click="shuffleQuestions(json)">Again?</button>
+        <button v-else class="next-button" @click="resetGame()">Again?</button>
       </div>
       <p class="score">score: {{ score }}</p>
     </div>
@@ -51,8 +51,8 @@ export default {
     window.addEventListener("keydown", this.keyAnswer);
   },
   methods: {
-    // shuffles questions and cuts down to 10
     shuffleQuestions: function (questionsArray) {
+      // shuffles questions and cuts down to 10
       const questionsCopy = questionsArray.slice();
       let currentIndex = questionsCopy.length;
       let temporaryValue, randomIndex;
@@ -68,23 +68,6 @@ export default {
 
       this.questions = questionsCopy.slice(0, 10);
       this.shuffleAnswers(questionsCopy[0]);
-    },
-    async nextQuestion() {
-      await this.resetElements();
-      await this.questions.shift();
-      await this.shuffleAnswers(this.questions[0]);
-      await this.toggleAnswered();
-    },
-    resetElements: function () {
-      const answerButtons = document.getElementsByClassName("answer-button");
-      answerButtons.forEach((button) => {
-        button.classList.remove("active", "nay");
-      });
-      document.getElementById("thumbs-up").classList.remove("correct");
-      document.getElementById("thumbs-down").classList.remove("incorrect");
-    },
-    toggleAnswered: function () {
-      this.answered = !this.answered;
     },
     shuffleAnswers: function (questionObject) {
       const answers = [
@@ -106,49 +89,82 @@ export default {
 
       this.answers = answers;
     },
+    async nextQuestion() {
+      // without async, key answers immediately followed by space bar can trigger unpredictable toggling and subsequent key behavior
+      await this.resetElements();
+      await this.questions.shift();
+      await this.shuffleAnswers(this.questions[0]);
+      await this.toggleAnswered();
+    },
+    resetElements: function () {
+      const answerButtons = document.getElementsByClassName("answer-button");
+      answerButtons.forEach((button) => {
+        button.classList.remove("active", "nay", "yay");
+      });
+      document.getElementById("thumbs-up").classList.remove("correct");
+      document.getElementById("thumbs-down").classList.remove("incorrect");
+    },
+    toggleAnswered: function () {
+      this.answered = !this.answered;
+    },
+    guessA: function () {
+      if (this.answered == false) {
+        document.getElementById("answer-a").classList.add("active");
+        if (this.answers[0] === this.questions[0]["correct"]) {
+          this.correctAnswer(0);
+        } else {
+          this.incorrectAnswer();
+        }
+      }
+    },
+    guessB: function () {
+      if (this.answered == false) {
+        document.getElementById("answer-b").classList.add("active");
+        if (this.answers[1] === this.questions[0]["correct"]) {
+          this.correctAnswer(1);
+        } else {
+          this.incorrectAnswer();
+        }
+      }
+    },
+    guessC: function () {
+      if (this.answered == false) {
+        document.getElementById("answer-c").classList.add("active");
+        if (this.answers[2] === this.questions[0]["correct"]) {
+          this.correctAnswer(2);
+        } else {
+          this.incorrectAnswer();
+        }
+      }
+    },
+    guessD: function () {
+      if (this.answered == false) {
+        document.getElementById("answer-d").classList.add("active");
+        if (this.answers[3] === this.questions[0]["correct"]) {
+          this.correctAnswer(3);
+        } else {
+          this.incorrectAnswer();
+        }
+      }
+    },
     keyAnswer: function (e) {
       if (this.answered === false) {
+        // a, b, c, d keys
         if (e.which === 65) {
-          // a
-          document.getElementById("answer-a").classList.add("active");
-          if (this.answers[0] === this.questions[0]["correct"]) {
-            this.correctAnswer();
-          } else {
-            this.incorrectAnswer();
-          }
+          this.guessA();
         } else if (e.which === 66) {
-          // b
-          document.getElementById("answer-b").classList.add("active");
-          if (this.answers[1] === this.questions[0]["correct"]) {
-            this.correctAnswer();
-          } else {
-            this.incorrectAnswer();
-          }
+          this.guessB();
         } else if (e.which === 67) {
-          // c
-          document.getElementById("answer-c").classList.add("active");
-          if (this.answers[2] === this.questions[0]["correct"]) {
-            this.correctAnswer();
-          } else {
-            this.incorrectAnswer();
-          }
+          this.guessC();
         } else if (e.which === 68) {
-          // d
-          document.getElementById("answer-d").classList.add("active");
-          if (this.answers[3] === this.questions[0]["correct"]) {
-            this.correctAnswer();
-          } else {
-            this.incorrectAnswer();
-          }
+          this.guessD();
         }
       } else if (this.answered === true) {
+        // space bar
         if (e.which === 32 && this.questions.length > 1) {
           this.nextQuestion();
         } else if (e.which === 32 && this.questions.length === 1) {
-          this.score = 0;
-          this.resetElements();
-          this.toggleAnswered();
-          this.shuffleQuestions(this.json);
+          this.resetGame();
         }
       }
     },
@@ -182,42 +198,11 @@ export default {
         document.getElementById("answer-d").classList.add("nay");
       }
     },
-    mouseAnswer: function (letter) {
-      if (this.answered == false) {
-        if (letter === "a") {
-          // a
-          document.getElementById("answer-a").classList.add("active");
-          if (this.answers[0] === this.questions[0]["correct"]) {
-            this.correctAnswer(0);
-          } else {
-            this.incorrectAnswer();
-          }
-        } else if (letter === "b") {
-          // b
-          document.getElementById("answer-b").classList.add("active");
-          if (this.answers[1] === this.questions[0]["correct"]) {
-            this.correctAnswer(1);
-          } else {
-            this.incorrectAnswer();
-          }
-        } else if (letter === "c") {
-          // c
-          document.getElementById("answer-c").classList.add("active");
-          if (this.answers[2] === this.questions[0]["correct"]) {
-            this.correctAnswer(2);
-          } else {
-            this.incorrectAnswer();
-          }
-        } else if (letter === "d") {
-          // d
-          document.getElementById("answer-d").classList.add("active");
-          if (this.answers[3] === this.questions[0]["correct"]) {
-            this.correctAnswer(3);
-          } else {
-            this.incorrectAnswer();
-          }
-        }
-      }
+    resetGame: function () {
+      this.score = 0;
+      this.resetElements();
+      this.toggleAnswered();
+      this.shuffleQuestions(this.json);
     },
   },
 };

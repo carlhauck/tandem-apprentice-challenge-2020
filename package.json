@@ -5,9 +5,23 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit --watch",
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "jest",
+    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "jest": true
+    }
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.vue$": "vue-jest"
+    }
   },
   "dependencies": {
     "axios": "^0.21.0",
@@ -24,9 +38,12 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^24.9.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "flush-promises": "^1.0.2",
+    "jest": "^24.9.0",
+    "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.11"
   }
 }
