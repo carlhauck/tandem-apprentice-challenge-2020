@@ -1,14 +1,19 @@
 <template>
   <div id="app">
-    <Trivia />
+    <div class="container text-center">
+      <Banner />
+      <Trivia />
+    </div>
   </div>
 </template>
 
 <script>
+import Banner from "./components/Banner";
 import Trivia from "./components/Trivia";
 export default {
   name: "app",
   components: {
+    Banner,
     Trivia,
   },
   data: function () {
