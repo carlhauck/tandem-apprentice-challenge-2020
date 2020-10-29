@@ -20,7 +20,7 @@
       <div class="flex-container">
         <button v-if="answered === false && questions.length > 1" class="next-button disabled" @click="nextQuestion()">Next Question</button>
         <button v-else-if="answered === true && questions.length > 1" class="next-button" @click="nextQuestion()">Next Question</button>
-        <button v-else-if="answered === false" class="next-button disabled" @click="shuffleQuestions(json)">Again?</button>
+        <button v-else-if="answered === false" class="next-button disabled" @click="prepQuestions(json)">Again?</button>
         <button v-else class="next-button" @click="resetGame()">Again?</button>
       </div>
       <p class="score">score: {{ score }}</p>
@@ -44,14 +44,14 @@ export default {
     };
   },
   created: function () {
-    this.shuffleQuestions(json);
+    this.prepQuestions(json);
     this.json = json;
   },
   mounted: function () {
-    window.addEventListener("keydown", this.keyAnswer);
+    window.addEventListener("keydown", this.onKeydown);
   },
   methods: {
-    shuffleQuestions: function (questionsArray) {
+    prepQuestions: function (questionsArray) {
       // shuffles questions and cuts down to 10
       const questionsCopy = questionsArray.slice();
       let currentIndex = questionsCopy.length;
@@ -91,12 +91,12 @@ export default {
     },
     async nextQuestion() {
       // without async, key answers immediately followed by space bar can trigger unpredictable toggling and subsequent key behavior
-      await this.resetElements();
+      await this.resetElemClasses();
       await this.questions.shift();
       await this.shuffleAnswers(this.questions[0]);
       await this.toggleAnswered();
     },
-    resetElements: function () {
+    resetElemClasses: function () {
       const answerButtons = document.getElementsByClassName("answer-button");
       answerButtons.forEach((button) => {
         button.classList.remove("active", "nay", "yay");
@@ -147,7 +147,7 @@ export default {
         }
       }
     },
-    keyAnswer: function (e) {
+    onKeydown: function (e) {
       if (this.answered === false) {
         // a, b, c, d keys
         if (e.which === 65) {
@@ -169,9 +169,9 @@ export default {
       }
     },
     correctAnswer: function (indexCorrect) {
+      this.toggleAnswered();
       const thumbsUp = document.getElementById("thumbs-up");
       thumbsUp.classList.add("correct");
-      this.toggleAnswered();
       this.score++;
       if (indexCorrect === 0) {
         document.getElementById("answer-a").classList.add("yay");
@@ -184,9 +184,9 @@ export default {
       }
     },
     incorrectAnswer: function () {
+      this.toggleAnswered();
       const thumbsDown = document.getElementById("thumbs-down");
       thumbsDown.classList.add("incorrect");
-      this.toggleAnswered();
       let indexCorrect = this.answers.indexOf(this.questions[0]["correct"]);
       if (indexCorrect === 0) {
         document.getElementById("answer-a").classList.add("nay");
@@ -200,9 +200,9 @@ export default {
     },
     resetGame: function () {
       this.score = 0;
-      this.resetElements();
+      this.resetElemClasses();
       this.toggleAnswered();
-      this.shuffleQuestions(this.json);
+      this.prepQuestions(this.json);
     },
   },
 };
