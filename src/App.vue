@@ -1,10 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-    </div>
-    <router-view/>
+    <Trivia />
   </div>
 </template>
+
+<script>
+import Trivia from "./components/Trivia";
+export default {
+  name: "app",
+  components: {
+    Trivia,
+  },
+  data: function () {
+    return {};
+  },
+};
+</script>
 
 <style>
 @font-face {
