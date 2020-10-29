@@ -8,33 +8,6 @@
 
 <style>
 @font-face {
-  font-family: "cassannet_plusregular";
-  src: url("./assets/fonts/cassannet_plus_regular-webfont.eot");
-  src: url("./assets/fonts/cassannet_plus_regular-webfont.eot?#iefix")
-      format("embedded-opentype"),
-    url("./assets/fonts/cassannet_plus_regular-webfont.woff2") format("woff2"),
-    url("./assets/fonts/cassannet_plus_regular-webfont.woff") format("woff"),
-    url("./assets/fonts/cassannet_plus_regular-webfont.ttf") format("truetype"),
-    url("./assets/fonts/cassannet_plus_regular-webfont.svg#cassannet_plusregular")
-      format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "bariollight";
-  src: url("./assets/fonts/bariol_light-webfont.eot");
-  src: url("./assets/fonts/bariol_light-webfont.eot?#iefix")
-      format("embedded-opentype"),
-    url("./assets/fonts/bariol_light-webfont.woff2") format("woff2"),
-    url("./assets/fonts/bariol_light-webfont.woff") format("woff"),
-    url("./assets/fonts/bariol_light-webfont.ttf") format("truetype"),
-    url("./assets/fonts/bariol_light-webfont.svg#bariollight") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "bariolregular";
   src: url("./assets/fonts/bariol_regular-webfont.eot");
   src: url("./assets/fonts/bariol_regular-webfont.eot?#iefix")
@@ -43,19 +16,6 @@
     url("./assets/fonts/bariol_regular-webfont.woff") format("woff"),
     url("./assets/fonts/bariol_regular-webfont.ttf") format("truetype"),
     url("./assets/fonts/bariol_regular-webfont.svg#bariolregular") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "bariolthin";
-  src: url("./assets/fonts/bariol_thin-webfont.eot");
-  src: url("./assets/fonts/bariol_thin-webfont.eot?#iefix")
-      format("embedded-opentype"),
-    url("./assets/fonts/bariol_thin-webfont.woff2") format("woff2"),
-    url("./assets/fonts/bariol_thin-webfont.woff") format("woff"),
-    url("./assets/fonts/bariol_thin-webfont.ttf") format("truetype"),
-    url("./assets/fonts/bariol_thin-webfont.svg#bariolregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -97,19 +57,27 @@ body {
   margin-left: auto;
 }
 
+.text-center {
+  text-align: center !important;
+}
+
 .flex-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.text-center {
-  text-align: center !important;
+.page-title {
+  display: inline;
+  font-family: "bariolbold";
+  font-size: 2em;
+  color: #6c6f45;
+  margin: 0.4em 0.4em;
 }
 
 svg {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 
 svg#thumbs-down {
@@ -127,28 +95,11 @@ svg.incorrect path {
   fill: rgb(209, 75, 75);
 }
 
-h1.page-title {
-  margin: 0.45em 0;
-}
-
-.page-title {
-  display: inline;
-  font-family: "bariolbold";
-  font-size: 2.2em;
-  color: #6c6f45;
-}
-
 .question {
   font-family: "bariolbold";
-  font-size: 1.4em;
+  font-size: 1.2em;
   color: rgb(70, 59, 102);
-  padding-bottom: 0.25em;
-}
-
-.score {
-  font-family: "bariolregular";
-  font-size: 1.4em;
-  color: rgb(136, 66, 0);
+  padding-bottom: 0.15em;
 }
 
 .answer-container {
@@ -160,10 +111,10 @@ h1.page-title {
 button.answer-button {
   display: block;
   width: 100%;
-  padding: 1em;
-  margin-bottom: 1em;
+  padding: 0.75em;
+  margin-bottom: 0.75em;
   font-family: "bariolregular";
-  font-size: 1.1em;
+  font-size: 1em;
   background-color: rgb(70, 59, 102);
   color: rgb(241, 239, 245);
   border-radius: 12px;
@@ -180,33 +131,8 @@ button.answer-button.active {
   color: white;
 }
 
-button.next-button {
-  display: block;
-  padding: 0.5em 1em;
-  margin-bottom: 0.25em;
-  font-family: "bariolbold";
-  font-size: 1.1em;
-  background-color: rgb(247, 244, 240);
-  color: rgb(48, 98, 156);
-  border-radius: 12px;
-  border: 2px solid rgb(48, 98, 156);
-}
-
-button.next-button.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  z-index: -1;
-}
-
-button.next-button:hover {
-  color: rgb(222, 230, 240);
-  background-color: rgb(66, 115, 172);
-  border-radius: 12px;
-  border: 2px solid rgb(48, 98, 156);
-}
-
 button.answer-button.yay {
-  background-color: rgb(134, 150, 77);
+  background-color: rgb(134, 151, 72);
   color: white;
   border: 2px solid rgb(70, 59, 102);
 }
@@ -255,17 +181,65 @@ button.answer-button.nay {
   }
 }
 
+button.next-button {
+  display: block;
+  padding: 0.5em 1em;
+  margin-bottom: 0.25em;
+  font-family: "bariolbold";
+  font-size: 1em;
+  background-color: rgb(247, 244, 240);
+  color: rgb(48, 98, 156);
+  border-radius: 12px;
+  border: 2px solid rgb(48, 98, 156);
+}
+
+button.next-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  z-index: -1;
+}
+
+button.next-button:hover {
+  color: rgb(222, 230, 240);
+  background-color: rgb(66, 115, 172);
+  border-radius: 12px;
+  border: 2px solid rgb(48, 98, 156);
+}
+
+.score {
+  font-family: "bariolregular";
+  font-size: 1.2em;
+  color: rgb(136, 66, 0);
+  padding: 0.25em;
+}
+
+@media (min-width: 350px) {
+  .page-title {
+    font-size: 2.5em;
+  }
+  .question {
+    font-size: 1.4em;
+    padding-bottom: 0.25em;
+  }
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+  button.answer-button {
+    padding: 1em;
+    font-size: 1.1em;
+  }
+  button.next-button {
+    font-size: 1.1em;
+  }
+  .score {
+    font-size: 1.4em;
+  }
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
-  }
-  .question {
-    font-family: "bariolbold";
-    font-size: 1.6em;
-    color: rgb(70, 59, 102);
-  }
-  .answer-container {
-    width: 90%;
   }
   .page-title {
     display: inline;
@@ -282,6 +256,14 @@ button.answer-button.nay {
     transform: scale(-1, 1);
     margin-top: 2em;
   }
+  .question {
+    font-family: "bariolbold";
+    font-size: 1.6em;
+    color: rgb(70, 59, 102);
+  }
+  .answer-container {
+    width: 90%;
+  }
   button.answer-button {
     font-size: 1.1em;
   }
@@ -292,7 +274,7 @@ button.answer-button.nay {
     max-width: 720px;
   }
   .answer-container {
-    width: 80%;
+    width: 70%;
   }
 }
 
@@ -301,7 +283,7 @@ button.answer-button.nay {
     max-width: 960px;
   }
   .answer-container {
-    width: 70%;
+    width: 60%;
   }
 }
 
@@ -310,7 +292,7 @@ button.answer-button.nay {
     max-width: 1140px;
   }
   .answer-container {
-    width: 60%;
+    width: 50%;
   }
 }
 </style>

@@ -162,8 +162,10 @@ export default {
       } else if (this.answered === true) {
         // space bar
         if (e.which === 32 && this.questions.length > 1) {
+          event.preventDefault(); // prevents spacebar from triggering another answer click
           this.nextQuestion();
         } else if (e.which === 32 && this.questions.length === 1) {
+          event.preventDefault();
           this.resetGame();
         }
       }
