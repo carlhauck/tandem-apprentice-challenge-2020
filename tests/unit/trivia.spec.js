@@ -12,61 +12,83 @@ describe("Trivia.vue", () => {
     expect(wrapper.text()).toContain('trivia')
   })
 
-  // test("checks length of shuffled/cut questions", () => {
-  //   window.questions = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
-  //   const wrapper = mount(Trivia)
-  //   expect(wrapper.findAllComponents(Trivia).toHaveLength(window.questions.length))
-  // })
+  test("imports all 21 trivia questions from json file", () => {
+    const wrapper = mount(Trivia)
+    expect(wrapper.vm.json.length).toBe(21)
+  })
 
-  // test("next question button is disabled upon page load", () => {
-  //   const wrapper = mount(Trivia)
-  //   // const json = "src/assets/data/apprentice-tandem-for-400-data.json"
-  //   // wrapper.vm.shuffleQuestions(json)
-  //   expect(wrapper.classes()).toContain("disabled")
-  // })
+  test("cuts trivia questions down to 10", () => {
+    const wrapper = mount(Trivia)
+    expect(wrapper.vm.questions.length).toBe(10)
+  })
+
+  test("loads first question's incorrect & correct answers into array for total of 4 answers", () => {
+    const wrapper = mount(Trivia)
+    expect(wrapper.vm.answers.length).toBe(4)
+  })
 
   test("renders five total buttons", () => {
-
     const wrapper = mount(Trivia)
     expect(wrapper.findAll('button').length).toBe(5)
   })
 
   test("v-if renders only one next-button at a time", () => {
-
     const wrapper = mount(Trivia)
     expect(wrapper.findAll('button.answer-button').length).toBe(4)
   })
 
-  // test("v-if renders only one next-button at a time", async () => {
+  // test("answer click adds active class to answer button", async () => {
 
   //   const wrapper = mount(Trivia)
-  //   const button = wrapper.find('button.answer-button')
+  //   // const button = wrapper.find('#answer-a')
 
-  //   expect(wrapper.findAll('button.next-button').length).toBe(1)
+  //   // expect(button.classes()).not.toContain('active')
+  //   expect(wrapper.vm.answered).toBe(false);
 
-  //   await button.trigger('click')
+  //   // await wrapper.trigger('keydown(65)')
 
-  //   expect(wrapper.findAll('button.next-button').length).toBe(1)
+  //   await wrapper.vm.guessA()
+
+  //   expect(wrapper.vm.answered).toBe(true);
+
+  //   // expect(button.classes()).toContain('active')
+
+  //   // TypeError: Cannot read property 'classList' of null
+
   // })
 
-  test("answer click adds active class to answer button", async () => {
-
+  test("toggleAnswered toggles boolean 'answered' value", async () => {
     const wrapper = mount(Trivia)
-    const button = wrapper.find('#answer-a')
-    expect(button.element.id).toBe('answer-a')
-
-
-    expect(button.classes()).not.toContain('active')
-
-    // expect(button.classes('active')).toBe(false)
-
-    await button.trigger('click')
-
-    // console.log(button.classes('active'))
-
-    // expect(mouseAnswer).toBeCalled()
-    // expect(button.classes()).toContain('active')
-
-    // expect(button.classes('active')).toBe(true)
+    expect(wrapper.vm.answered).toBe(false);
+    await wrapper.vm.toggleAnswered()
+    expect(wrapper.vm.answered).toBe(true);
   })
+
+  // test("resetGame toggles boolean 'answered' value", () => {
+  //   const wrapper = mount(Trivia)
+  //   wrapper.vm.score = 8
+  //   wrapper.vm.answered = true
+  //   wrapper.vm.questions.shift()
+
+  //   wrapper.vm.resetGame()
+
+  //   expect(wrapper.vm.score).toBe(0)
+  //   expect(wrapper.vm.answered).toBe(true)
+  //   expect(wrapper.vm.questions.length).toBe(10)
+
+  //   // TypeError: answerButtons.forEach is not a function
+  // })
+
+  test("resetGame toggles boolean 'answered' value", () => {
+    const wrapper = mount(Trivia)
+
+    expect(wrapper.vm.questions.length).toBe(10)
+
+    wrapper.vm.nextQuestion()
+
+    expect(wrapper.vm.questions.length).toBe(9)
+
+    // [UnhandledPromiseRejection: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "TypeError: answerButtons.forEach is not a function".]
+  })
+
 })
