@@ -5,7 +5,7 @@
           v-for="(answer, answerId) in answers"
           v-bind:answer="answer"
           v-bind:answers="answers"
-          v-bind:answered="answered"
+          v-bind:answerSubmitted="answerSubmitted"
           v-bind:questions="questions"
           v-bind:correctAnswerId="correctAnswerId"
           v-bind:selectedAnswerId="selectedAnswerId"
@@ -22,7 +22,7 @@ export default {
   components: {
     AnswerButton,
   },
-  props: ["answers", "answered", "questions"],
+  props: ["answers", "answerSubmitted", "questions"],
   data: function () {
     return {
       selectedAnswerId: null,
@@ -47,3 +47,35 @@ export default {
   },
 };
 </script>
+
+<style>
+.answer-container {
+  margin-top: 0.25em;
+  margin-bottom: 0.75em;
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .answer-container {
+    width: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  .answer-container {
+    width: 70%;
+  }
+}
+
+@media (min-width: 992px) {
+  .answer-container {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .answer-container {
+    width: 50%;
+  }
+}
+</style>
