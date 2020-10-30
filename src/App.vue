@@ -96,10 +96,10 @@ export default {
     },
     async nextQuestion() {
       // without async, keydown answers followed quickly enough by spacebar can trigger unpredictable toggling & subsequent key behavior
-      await this.toggleSubmitted();
       await this.resetElemClasses();
       await this.questions.shift();
       await this.shuffleAnswers(this.questions[0]);
+      await this.toggleSubmitted();
     },
     resetElemClasses: function () {
       const answerButtons = document.getElementsByClassName("answer-button");
