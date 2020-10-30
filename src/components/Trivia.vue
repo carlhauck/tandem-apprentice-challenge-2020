@@ -1,21 +1,5 @@
 <template>
   <div class="trivia">
-    <h2 class="question"> {{ 11 - questions.length }}. {{ questions[0]["question"] }} </h2>
-    <div class="flex-container">
-      <div class="answer-container">
-        <button id="answer-a" class="answer-button" @click="guessA()">(a) {{ answers[0] }} </button>
-        <button id="answer-b" class="answer-button" @click="guessB()">(b) {{ answers[1] }} </button>
-        <button id="answer-c" class="answer-button" @click="guessC()">(c) {{ answers[2] }} </button>
-        <button id="answer-d" class="answer-button" @click="guessD()">(d) {{ answers[3] }} </button>
-      </div>
-    </div>
-    <div class="flex-container">
-      <button v-if="answered === false && questions.length > 1" class="next-button disabled" @click="nextQuestion()">Next Question</button>
-      <button v-else-if="answered === true && questions.length > 1" class="next-button" @click="nextQuestion()">Next Question</button>
-      <button v-else-if="answered === false" class="next-button disabled" @click="prepQuestions(json)">Again?</button>
-      <button v-else class="next-button" @click="resetGame()">Again?</button>
-    </div>
-    <p class="score">score: {{ score }}</p>
   </div>
 </template>
 

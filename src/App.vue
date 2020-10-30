@@ -2,22 +2,117 @@
   <div id="app">
     <div class="container text-center">
       <Banner />
-      <Trivia />
+      <Question :questions="questions" />
+      <AnswerContainer
+        v-bind:answers="answers" v-bind:answered="answered" v-bind:questions="questions"
+        v-on:toggleAnswered="toggleAnswered"
+        v-on:addPoint="addPoint" />
+      <NextButton
+        v-bind:answered="answered" v-bind:questions="questions"
+        v-on:nextQuestion="nextQuestion"
+        v-on:resetElemClasses="resetElemClasses"
+        v-on:resetGame="resetGame" />
+      <Score :score="score" />
     </div>
   </div>
 </template>
 
 <script>
+import json from "./assets/data/apprentice-tandem-for-400-data.json";
 import Banner from "./components/Banner";
-import Trivia from "./components/Trivia";
+import Question from "./components/Question";
+import AnswerContainer from "./components/AnswerContainer";
+import NextButton from "./components/NextButton";
+import Score from "./components/Score";
 export default {
   name: "app",
   components: {
     Banner,
-    Trivia,
+    Question,
+    AnswerContainer,
+    NextButton,
+    Score,
   },
   data: function () {
-    return {};
+    return {
+      json: [],
+      questions: [],
+      answers: [],
+      answered: false,
+      score: 0,
+    };
+  },
+  created: function () {
+    this.prepQuestions(json);
+    this.json = json;
+  },
+  methods: {
+    prepQuestions: function (questionsArray) {
+      // shuffles questions and cuts down to 10
+      const questionsCopy = questionsArray.slice();
+      let currentIndex = questionsCopy.length;
+      let temporaryValue, randomIndex;
+
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = questionsCopy[currentIndex];
+        questionsCopy[currentIndex] = questionsCopy[randomIndex];
+        questionsCopy[randomIndex] = temporaryValue;
+      }
+
+      this.questions = questionsCopy.slice(0, 10);
+      this.shuffleAnswers(questionsCopy[0]);
+    },
+    shuffleAnswers: function (questionObject) {
+      const answers = [
+        questionObject["correct"],
+        ...questionObject["incorrect"],
+      ];
+
+      let currentIndex = answers.length;
+      let temporaryValue, randomIndex;
+
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = answers[currentIndex];
+        answers[currentIndex] = answers[randomIndex];
+        answers[randomIndex] = temporaryValue;
+      }
+
+      this.answers = answers;
+    },
+    async nextQuestion() {
+      // without async, key answers immediately followed by space bar can trigger unpredictable toggling and subsequent key behavior
+      await this.resetElemClasses();
+      await this.questions.shift();
+      await this.shuffleAnswers(this.questions[0]);
+      await this.toggleAnswered();
+    },
+    resetElemClasses: function () {
+      const answerButtons = document.getElementsByClassName("answer-button");
+      answerButtons.forEach((button) => {
+        button.classList.remove("active", "nay", "yay");
+      });
+      console.log(answerButtons);
+      document.getElementById("thumbs-up").classList.remove("correct");
+      document.getElementById("thumbs-down").classList.remove("incorrect");
+    },
+    toggleAnswered: function () {
+      this.answered = !this.answered;
+    },
+    addPoint: function () {
+      this.score++;
+    },
+    resetGame: function () {
+      this.score = 0;
+      this.resetElemClasses();
+      this.toggleAnswered();
+      this.prepQuestions(this.json);
+    },
   },
 };
 </script>
