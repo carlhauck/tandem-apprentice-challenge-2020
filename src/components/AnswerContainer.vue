@@ -36,9 +36,14 @@ export default {
   methods: {
     selectAnswer(selectedAnswerId) {
       this.selectedAnswerId = selectedAnswerId;
-      this.$emit("toggleAnswered");
+      this.$emit("toggleSubmitted");
       if (selectedAnswerId === this.correctAnswerId) {
         this.addScore();
+        const thumbsUp = document.getElementById("thumbs-up");
+        thumbsUp.classList.add("correct");
+      } else {
+        const thumbsDown = document.getElementById("thumbs-down");
+        thumbsDown.classList.add("incorrect");
       }
     },
     addScore() {

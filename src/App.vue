@@ -7,7 +7,7 @@
         v-bind:answers="answers"
         v-bind:answerSubmitted="answerSubmitted"
         v-bind:questions="questions"
-        v-on:toggleAnswered="toggleAnswered"
+        v-on:toggleSubmitted="toggleSubmitted"
         v-on:addPoint="addPoint" />
       <NextButton
         v-bind:answerSubmitted="answerSubmitted"
@@ -88,7 +88,7 @@ export default {
 
       this.answers = answers;
     },
-    toggleAnswered: function () {
+    toggleSubmitted: function () {
       this.answerSubmitted = !this.answerSubmitted;
     },
     addPoint: function () {
@@ -96,7 +96,7 @@ export default {
     },
     async nextQuestion() {
       // without async, keydown answers followed quickly enough by spacebar can trigger unpredictable toggling & subsequent key behavior
-      await this.toggleAnswered();
+      await this.toggleSubmitted();
       await this.resetElemClasses();
       await this.questions.shift();
       await this.shuffleAnswers(this.questions[0]);
@@ -113,7 +113,7 @@ export default {
     resetGame: function () {
       this.score = 0;
       this.resetElemClasses();
-      this.toggleAnswered();
+      this.toggleSubmitted();
       this.prepQuestions(this.json);
     },
   },
