@@ -14,27 +14,19 @@ export default {
     window.addEventListener("keydown", this.onKeydown);
   },
   methods: {
-    // onClick: function () {
-    //   if (this.questions.length > 1) {
-    //     this.$emit("nextQuestion");
-    //   } else if (this.questions.length === 1) {
-    //     this.$emit("resetGame");
-    //   }
-    // },
     clickNext: function () {
       this.$emit("nextQuestion");
-      this.$emit("resetElemClasses");
     },
     clickReset: function () {
       this.$emit("resetGame");
     },
     onKeydown: function (e) {
-      if (this.answered === true) {
+      if (this.answered && e.which === 32) {
         // space bar
-        if (e.which === 32 && this.questions.length > 1) {
+        if (this.questions.length > 1) {
           event.preventDefault(); // prevents spacebar from triggering another answer click
           this.$emit("nextQuestion");
-        } else if (e.which === 32 && this.questions.length === 1) {
+        } else if (this.questions.length === 1) {
           event.preventDefault();
           this.$emit("resetGame");
         }

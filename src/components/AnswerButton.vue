@@ -1,8 +1,11 @@
 <template>
   <button class="answer-button"
     v-on:click="selectAnswer(answer)"
-    v-bind:class="{ active: isActive, yay: selectedAnswerId === correctAnswerId && answerId === selectedAnswerId, nay: answered && answerId === correctAnswerId && correctAnswerId !== selectedAnswerId }">
-      {{ answer }}
+    v-bind:class="{ 
+      active: answered && isActive && answerId === selectedAnswerId,
+      yay: answered && selectedAnswerId === correctAnswerId && answerId === selectedAnswerId,
+      nay: answered && answerId === correctAnswerId && correctAnswerId !== selectedAnswerId }">
+        {{ answer }}
     </button>
 </template>
 
