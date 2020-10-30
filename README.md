@@ -8,7 +8,6 @@ npm install
 ### Dependencies
 * core-js 3.6.5
 * Vue.js 2.6.11
-* Vue Router 3.4.8
 
 ### Compiles and hot-reloads for development
 ```
@@ -32,9 +31,7 @@ npm run test:unit
 
 ## Reflection
 ### Known issues/challenges
-This was my first time attempting to use Jest, so I admittedly eschewed TDD tenets in favor of something like Development-Driven Testing. (I'm more familiar with Ruby and RSpec, and backend unit testing is also more intuitive to me.) In poring over the Jest documentation, I realized that I have a good deal to learn about components and props before I can take full advantage of Jest within a framework like Vue. As a result, I don't have much faith in the code coverage of my unit tests here, but I'm looking forward to learning more about Jest and unit testing best practices in general.
-
-One super minor side note: One of the questions provided includes only three answers. I considered adjusting my code to account for that (so that it wouldn't render a blank 4th answer), but since the acceptance criteria explicitly mentioned "4 possible answers," I decided to ignore it, since it'd make more sense to just add a fourth answer to the json object.
+This was my first time attempting to use Jest (not to mention my first time diving into components, props, and emitting), so I admittedly eschewed TDD tenets in favor of something like Development-Driven Testing. (I'm more familiar with Ruby and RSpec, and backend unit testing is also more intuitive to me.) As a result, I'm not super confident about the code coverage of my unit tests here, but I'm looking forward to learning more about Jest and unit testing best practices in general.
 
 ### Feature wish list
 It would've been fun to include a countdown timer for each question. I also considered adding sound effects for right/wrong answers, but decided that it'd probably just be annoying :)
