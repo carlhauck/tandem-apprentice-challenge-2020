@@ -13,14 +13,14 @@
 .page-title {
   display: inline;
   font-family: "bariolbold";
-  font-size: 2em;
+  font-size: 1.9em;
   color: #6c6f45;
   margin: 0.4em 0.4em;
 }
 
 svg {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
 }
 
 svg#thumbs-down {

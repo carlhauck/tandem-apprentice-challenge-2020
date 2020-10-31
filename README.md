@@ -24,6 +24,9 @@ npm run build
 npm run test:unit
 ```
 
+### Live Netlify deploy
+https://distracted-perlman-0aa5c3.netlify.app/
+
 ### Using the trivia app
 * To answer a question: Click one of the answer options, or type 'a', 'b', 'c', or 'd' on your keyboard.
 * To advance to the next question: Click the 'Next Question' button or use the space bar on your keyboard (only available after you've answered the question currently on screen).
@@ -36,9 +39,9 @@ This was my first time attempting to use Jest (not to mention my first time divi
 ### Feature wish list
 It would've been fun to include a countdown timer for each question. I also considered adding sound effects for right/wrong answers, but decided that it'd probably just be annoying :)
 
-Most importantly, though, because the stated goal of the app was to help people "improve their trivia skills," it would've been nice to find ways to make it feel more training-like rather than quiz-like. Perhaps that'd mean adding a database to track a user's scores over time, or providing question-specific study tips (e.g., mnemonic devices) for questions the user repeatedly gets wrong.
+Most importantly, though, because the stated goal of the app was to help people "improve their trivia skills," it would be nice to find additional ways to make it feel more training-like rather than quiz-like. Perhaps that'd mean adding a database to track a user's scores over time, or providing question-specific study tips (e.g., mnemonic devices) for questions the user repeatedly gets wrong.
 
-## From the apprenticeship application
+## The apprenticeship application prompt
 
 ### Prompt: Tandem for 400!
 At Tandem, we love to learn and have fun and what better way to do that than to play a round of trivia. One of our favorite ways to wait while our test suite is running is to hop over to the #games channel on Slack and play a quick round of trivia. Playing trivia isn’t just a fun way to learn something new but also a great way to take a little break from a normal work task.
